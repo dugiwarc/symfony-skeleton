@@ -1,0 +1,10 @@
+#test:
+#  path: /test/{age}
+#  controller: App\Controller\BlogController::test
+#  defaults:
+#    age: 0
+#  requirements:
+#    age: \d+
+#  methods: [GET, POST]
+#  #    host:
+#  schemes: [https, http]
