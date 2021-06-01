@@ -18,6 +18,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\RouterInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 /**
  * Class MicroPostController
@@ -105,11 +106,14 @@ class MicroPostController extends AbstractController
 
     /**
      * @Route("/add", name="micro_post_add")
+     * @Security("is_granted('ROLE_USER')")
      */
-    public function add(Request $request): Response
+    public function add(Request $request, TokenStorageInterface $tokenStorage): Response
     {
+        $user = $tokenStorage->getToken()->getUser();
         $microPost = new MicroPost();
         $microPost->setTime(new \DateTime());
+        $microPost->setUser($user);
 
         $form = $this->formFactory->create(MicroPostType::class, $microPost);
         $form->handleRequest($request);
