@@ -17,16 +17,17 @@
         <ul class="navbar-nav px-3">
             {% if is_granted('ROLE_USER') %}
                 <li class="nav-item text-nowrap border-right border-secondary">
-{#                    <a class="nav-link" href="{{ path('notification_all') }}">#}
+                    <a class="nav-link" href="#">
+                        Notifications
 {#                        {{ 'Notifications'|trans }}#}
-{#                        <span class="badge badge-light" id="js-notification-count">#}
-{#                            <i class="fas fa-circle-notch fa-spin"></i>#}
-{#                        </span>#}
-{#                    </a>#}
+                        <span class="badge badge-light" id="js-notification-count">
+                            <i class="fa fa-circle fa-circle-o-notch fa-spin"></i>
+                        </span>
+                    </a>
                 </li>
                 <li class="nav-item text-nowrap">
-{#                    <a class="nav-link"#}
-{#                       href="{{ path('micro_post_user', {'username': app.user.username}) }}">{{ app.user.fullName }}</a>#}
+                    <a class="nav-link"
+                       href="{{ path('micro_post_user', {'username': app.user.username}) }}">{{ app.user.fullName }}</a>
                 </li>
                 <li class="nav-item text-nowrap d-flex align-items-center">
                     <a class="btn btn-sm btn-outline-light"
