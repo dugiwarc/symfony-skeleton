@@ -73,7 +73,7 @@ class MicroPostController extends AbstractController
 
     /**
     * @Route("/edit/{id}", name="micro_post_edit")
-    * @Security("is_granted('edit', microPost", message="Access denied")
+    * @Security("is_granted('edit', microPost)", message="Access denied")
     */
     public function edit(MicroPost $microPost, Request $request)
     {
@@ -92,7 +92,7 @@ class MicroPostController extends AbstractController
 
     /**
      * @Route("/delete/{id}", name="micro_post_delete")
-     * @Security("is_granted('delete', microPost", message="Access denied")
+     * @Security("is_granted('delete', microPost)", message="Access denied")
      */
     public function delete(MicroPost $microPost): RedirectResponse
     {

@@ -10,6 +10,13 @@
                         @{{ user.username }}
                     </small>
                 </h5>
+                {% if user != app.user %}
+                    {% if user.followers.contains(app.user) == false %}
+                        <a href="{{ path("following_follow", {'id': user.id}) }}" class="btn btn-outline-primary">Follow</a>
+                    {% else %}
+                        <a href="{{ path("following_unfollow", {'id': user.id}) }}" class="btn btn-outline-danger">Unfollow</a>
+                    {% endif %}
+                {% endif %}
             </div>
         </div>
     </div>
@@ -22,8 +29,8 @@
             <ul class="list-group list-group-flush">
                 {% for followers in user.followers %}
                     <li class="list-group-item">
-                        <a href="{{ path('micro_post_user', {'username': follower.username}) }}">
-                            @{{ follower.username }}
+                        <a href="{{ path('micro_post_user', {'username': followers.username}) }}">
+                            @{{ followers.username }}
                         </a>
                     </li>
                 {% endfor %}
