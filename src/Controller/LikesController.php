@@ -16,7 +16,8 @@ class LikesController extends AbstractController
 
     /**
      * @param MicroPost $microPost
-     * @Route("/like/{id}, name="likes_like")
+     * @return JsonResponse
+     * @Route("/like/{id}", name="likes_like")
      */
     public function like(MicroPost $microPost) : JsonResponse
     {
@@ -40,9 +41,10 @@ class LikesController extends AbstractController
 
     /**
      * @param MicroPost $microPost
-     * @Route("/unlike/{id}, name="likes_unlike")
+     * @return JsonResponse
+     * @Route("/unlike/{id}", name="likes_unlike")
      */
-    public function unlike(MicroPost $microPost)
+    public function unlike(MicroPost $microPost): JsonResponse
     {
         /**
          * @var User $currentUser
