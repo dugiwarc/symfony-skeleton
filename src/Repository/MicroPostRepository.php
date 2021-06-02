@@ -23,14 +23,12 @@ class MicroPostRepository extends ServiceEntityRepository
     public function findAllByUsers(Collection $users)
     {
         $qb = $this->createQueryBuilder('p');
-        $qb->select('p')
+        return $qb->select('p')
             ->where('p.user IN (:following)')
             ->setParameter('following', $users)
             ->orderBy('p.time', 'DESC')
             ->getQuery()
             ->getResult();
-
-        return $qb;
     }
 
     // /**

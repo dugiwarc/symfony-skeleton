@@ -24,8 +24,6 @@ class FollowingController extends AbstractController
      */
     public function follow(User $userToFollow) : Response
     {
-
-
         /**
          * @var User $currentUser
          */
