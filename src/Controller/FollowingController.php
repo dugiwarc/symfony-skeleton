@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -23,14 +24,17 @@ class FollowingController extends AbstractController
      */
     public function follow(User $userToFollow) : Response
     {
+
+
         /**
          * @var User $currentUser
          */
         $currentUser = $this->getUser();
+        if($userToFollow->getId() !== $currentUser->getId()) {
+            $currentUser->getFollowing()->add($userToFollow);
 
-        $currentUser->getFollowing()->add($userToFollow);
-
-        $this->getDoctrine()->getManager()->flush();
+            $this->getDoctrine()->getManager()->flush();
+        }
 
         return $this->redirectToRoute('micro_post_user', [
             'username' => $userToFollow->getUsername()
@@ -39,7 +43,7 @@ class FollowingController extends AbstractController
     /**
      * @Route("/unfollow/{id}", name="following_unfollow")
      */
-    public function unfollow(User $userToUnfollow)
+    public function unfollow(User $userToUnfollow): RedirectResponse
     {
         /**
          * @var User $currentUser
