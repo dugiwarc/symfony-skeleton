@@ -29,24 +29,28 @@
     {% if is_granted('ROLE_USER') %}
         <script>
             function fetchNotificationCount() {
+                console.log("Fetching");
                 fetch(
                     '{{ path('notification_unread') }}',
                     {'credentials': 'include'}
                 ).then(function(res){
+                    console.log(res);
                     res.json().then(
                         function(val) {
+                            console.log(val);
                             document.getElementById('js-notification-count').innerText = val.count;
                             setTimeout(fetchNotificationCount, 5000)
                         }
                     ).catch(err=> {
                         console.log(err)
                     })
-                })
+                }).catch((err) => console.log("Tommy", err))
             }
 
             fetchNotificationCount();
         </script>
     {% endif %}
+    <script>console.log("Hey")</script>
 {% endblock %}
 </body>
 </html>

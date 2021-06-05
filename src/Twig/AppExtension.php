@@ -3,10 +3,11 @@
 
 namespace App\Twig;
 
-
+use App\Entity\LikeNotification;
 use Twig\Extension\AbstractExtension;
 use Twig\Extension\GlobalsInterface;
 use Twig\TwigFilter;
+use \Twig\TwigTest;
 
 class AppExtension extends AbstractExtension implements GlobalsInterface
 {
@@ -30,6 +31,16 @@ class AppExtension extends AbstractExtension implements GlobalsInterface
     public function priceFilter($number): string
     {
         return '$'.number_format($number, '2', '.','.');
+    }
+
+    public function getTests(): array
+    {
+        return [
+            new TwigTest(
+                'like',
+                function($obj) { return $obj instanceof LikeNotification; }
+            )
+        ];
     }
 
     public function getGlobals(): array
