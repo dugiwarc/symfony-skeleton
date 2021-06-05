@@ -7,6 +7,7 @@ use App\Entity\Notification;
 use App\Repository\NotificationRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -49,6 +50,30 @@ class NotificationController extends AbstractController
                 'user'=> $this->getUser()
             ])
         ]);
+    }
+
+    /**
+     * @Route("/acknowledge/{id}", name="notification_acknowledge")
+     * @param Notification $notification
+     * @return RedirectResponse
+     */
+    public function acknowledge(Notification $notification): RedirectResponse
+    {
+        $notification->setSeen(true);
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('notification_all');
+    }
+
+    /**
+     * @Route("/acknowledge-all", name="notification_acknowledge_all")
+     */
+    public function acknowledgeAll(): RedirectResponse
+    {
+        $this->notificationRepository->markAllAsReadByCurrentUser($this->getUser());
+        $this->getDoctrine()->getManager()->flush();
+
+        return $this->redirectToRoute('notification_all');
     }
 
 }
