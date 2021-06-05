@@ -124,29 +124,7 @@ class MicroPostController extends AbstractController
         return new RedirectResponse($this->router->generate('micro_post_index'));
     }
 
-    /**
-     * @Route("/addcomment", name="comment_add")
-     * @Security("is_granted('ROLE_USER')")
-     */
-    public function addComment(Request $request, TokenStorageInterface $tokenStorage): Response
-    {
-        $user = $tokenStorage->getToken()->getUser();
-        $comment = new Comment();
-        $comment->setAuthor($user);
-        $comment->setMicroPost($microPost);
 
-        $form = $this->formFactory->create(CommentType::class, $comment);
-        $form->handleRequest($request);
-
-        if($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($comment);
-            $this->entityManager->flush();
-
-            return new RedirectResponse($this->router->generate('micro_post_index'));
-        }
-
-        return new Response($this->render('micro-post/add.html.twig', ['form'=>$form->createView()]));
-    }
 
     /**
      * @Route("/add", name="micro_post_add")
@@ -185,6 +163,30 @@ class MicroPostController extends AbstractController
         ]);
 
         return new Response($html);
+    }
+
+    /**
+     * @Route("/addcomment/{id}", name="comment_add")
+     * @Security("is_granted('ROLE_USER')")
+     */
+    public function addComment(Request $request, TokenStorageInterface $tokenStorage, $id): Response
+    {
+        $user = $tokenStorage->getToken()->getUser();
+        $comment = new Comment();
+        $comment->setAuthor($user);
+        $comment->setMicroPost($id);
+
+        $form = $this->formFactory->create(CommentType::class, $comment);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $this->entityManager->persist($comment);
+            $this->entityManager->flush();
+
+            return new RedirectResponse($this->router->generate('micro_post_index'));
+        }
+
+        return new Response($this->render('micro-post/add.html.twig', ['form'=>$form->createView()]));
     }
 
     /**
