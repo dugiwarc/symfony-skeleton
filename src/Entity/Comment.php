@@ -17,6 +17,12 @@ class Comment
      */
     private $id;
 
+    /**
+     * @var string;
+     * @ORM\Column(type="string")
+     */
+    private $text;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -65,5 +71,21 @@ class Comment
     public function setMicroPost($microPost): void
     {
         $this->microPost = $microPost;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getText()
+    {
+        return $this->text;
+    }
+
+    /**
+     * @param mixed $text
+     */
+    public function setText($text): void
+    {
+        $this->text = $text;
     }
 }

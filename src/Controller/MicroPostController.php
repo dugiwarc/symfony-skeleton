@@ -169,17 +169,19 @@ class MicroPostController extends AbstractController
      * @Route("/addcomment/{id}", name="comment_add")
      * @Security("is_granted('ROLE_USER')")
      */
-    public function addComment(Request $request, TokenStorageInterface $tokenStorage, $id): Response
+    public function addComment(Request $request, TokenStorageInterface $tokenStorage, MicroPost $microPost): Response
     {
         $user = $tokenStorage->getToken()->getUser();
         $comment = new Comment();
         $comment->setAuthor($user);
-        $comment->setMicroPost($id);
+        $comment->setMicroPost($microPost);
 
         $form = $this->formFactory->create(CommentType::class, $comment);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            $microPost->comment($comment);
             $this->entityManager->persist($comment);
             $this->entityManager->flush();
 
