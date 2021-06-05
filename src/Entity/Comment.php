@@ -50,4 +50,20 @@ class Comment
     {
         return $this->author;
     }
+
+    /**
+     * @param mixed $author
+     */
+    public function setAuthor($author): void
+    {
+        $this->author = $author;
+    }
+
+    /**
+     * @param mixed $microPost
+     */
+    public function setMicroPost($microPost): void
+    {
+        $this->microPost = $microPost;
+    }
 }
