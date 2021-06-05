@@ -102,6 +102,11 @@ class User implements UserInterface, \Serializable
     private $postsLiked;
 
     /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\MicroPost", mappedBy="signaledBy")
+     */
+    private $postsSignaled;
+
+    /**
      * @ORM\Column(type="string", nullable=true, length=30)
      */
     private $confirmationToken;
@@ -116,12 +121,18 @@ class User implements UserInterface, \Serializable
      */
     private $preferences;
 
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
+     */
+    private $comments;
+
     public function __construct()
     {
         $this->posts = new ArrayCollection();
         $this->followers = new ArrayCollection();
         $this->following = new ArrayCollection();
         $this->postsLiked = new ArrayCollection();
+        $this->comments = new ArrayCollection();
         $this->roles = [self::ROLE_USER];
         $this->enabled = false;
     }
@@ -344,5 +355,13 @@ class User implements UserInterface, \Serializable
         $this->preferences = $preferences;
 
         return $this;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getComments(): ArrayCollection
+    {
+        return $this->comments;
     }
 }

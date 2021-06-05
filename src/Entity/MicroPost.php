@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\MicroPostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Entity\Comment;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -15,9 +16,29 @@ use Symfony\Component\Validator\Constraints as Assert;
 class MicroPost
 {
 
+
+
     public function __construct()
     {
         $this->likedBy = new ArrayCollection();
+        $this->signaledBy = new ArrayCollection();
+        $this->comments = new ArrayCollection();
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getComments(): ArrayCollection
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getSignaledBy(): ArrayCollection
+    {
+        return $this->signaledBy;
     }
 
     /**
@@ -35,6 +56,32 @@ class MicroPost
      * )
      */
     private $likedBy;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author")
+     */
+    private $comments;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="postsSignaled")
+     * @ORM\JoinTable(name="post_signals",
+     *     joinColumns={@ORM\JoinColumn(name="post_id", referencedColumnName="id")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")})
+     */
+    private $signaledBy;
+
+    public function comment(Comment $comment) {
+        $this->comments->add($comment);
+    }
+
+    public function signal(User $user)
+    {
+        if($this->signaledBy->contains($user)) {
+            return;
+        }
+
+        $this->signaledBy->add($user);
+    }
 
     public function like(User $user)
     {
