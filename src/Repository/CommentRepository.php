@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Comment;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -17,6 +18,15 @@ class CommentRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Comment::class);
+    }
+
+    public function findAllByPostId($id)
+    {
+        $qb = $this->createQueryBuilder('c');
+        return $qb->select('c')
+            ->where('c.testId = :id')
+            ->getQuery()
+            ->execute();
     }
 
 }

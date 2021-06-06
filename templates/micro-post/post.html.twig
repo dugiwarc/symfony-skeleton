@@ -21,6 +21,9 @@
     </article>
 
     {% if is_granted('ROLE_USER') %}
+            <a class="btn btn-sm btn-primary" href="{{ path('comment_add', {'id': post.id}) }}">
+                {{ 'Add comment'|trans }}
+            </a>
         {% set isLiked = post.getLikedBy.contains(app.user) %}
         <div class="pt-2">
             <button type="button"

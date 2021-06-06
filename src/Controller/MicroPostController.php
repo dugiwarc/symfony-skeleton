@@ -8,6 +8,7 @@ use App\Entity\User;
 use App\Entity\MicroPost;
 use App\Form\CommentType;
 use App\Form\MicroPostType;
+use App\Repository\CommentRepository;
 use App\Repository\MicroPostRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -52,14 +53,20 @@ class MicroPostController extends AbstractController
      */
     private $flashBag;
 
+    /**
+     * @var CommentRepository
+     */
+    private $commentRepository;
 
-    public function __construct(MicroPostRepository $microPostRepository, FormFactoryInterface $formFactory, EntityManagerInterface $entityManager, RouterInterface $router, FlashBagInterface $flashBag)
+
+    public function __construct(MicroPostRepository $microPostRepository, FormFactoryInterface $formFactory, EntityManagerInterface $entityManager, RouterInterface $router, FlashBagInterface $flashBag, CommentRepository $commentRepository)
     {
         $this->microPostRepository = $microPostRepository;
         $this->formFactory = $formFactory;
         $this->entityManager = $entityManager;
         $this->router = $router;
         $this->flashBag = $flashBag;
+        $this->commentRepository = $commentRepository;
     }
 
     /**
@@ -175,6 +182,7 @@ class MicroPostController extends AbstractController
         $comment = new Comment();
         $comment->setAuthor($user);
         $comment->setMicroPost($microPost);
+        $comment->setTestId($microPost->getId());
 
         $form = $this->formFactory->create(CommentType::class, $comment);
         $form->handleRequest($request);
@@ -196,6 +204,7 @@ class MicroPostController extends AbstractController
      */
     public function post(MicroPost $post): Response
     {
+        $this->commentRepository->findAllByPostId($post->getId());
         return new Response($this->render('micro-post/post.html.twig', ['post'=>$post]));
     }
 
