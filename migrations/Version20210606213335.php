@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20210606211141 extends AbstractMigration
+final class Version20210606213335 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,14 +20,12 @@ final class Version20210606211141 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE comment ADD CONSTRAINT FK_9474526C78BD156F FOREIGN KEY (micro_post_id_id) REFERENCES micro_post (id)');
-        $this->addSql('CREATE INDEX IDX_9474526C78BD156F ON comment (micro_post_id_id)');
+        $this->addSql('ALTER TABLE comment ADD text VARCHAR(255) NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE comment DROP FOREIGN KEY FK_9474526C78BD156F');
-        $this->addSql('DROP INDEX IDX_9474526C78BD156F ON comment');
+        $this->addSql('ALTER TABLE comment DROP text');
     }
 }

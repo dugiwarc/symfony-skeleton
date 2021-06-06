@@ -24,6 +24,9 @@
             <a class="btn btn-sm btn-primary" href="{{ path('comment_add', {'id': post.id}) }}">
                 {{ 'Add comment'|trans }}
             </a>
+        {% for comment in comments %}
+            <div>{{ comment.getText }}</div>
+        {% endfor %}
         {% set isLiked = post.getLikedBy.contains(app.user) %}
         <div class="pt-2">
             <button type="button"

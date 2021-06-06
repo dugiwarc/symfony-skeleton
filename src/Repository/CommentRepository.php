@@ -24,9 +24,9 @@ class CommentRepository extends ServiceEntityRepository
     {
         $qb = $this->createQueryBuilder('c');
         return $qb->select('c')
-            ->where('c.testId = :id')
-            ->getQuery()
-            ->execute();
+            ->where('c.testId = (:id)')
+            ->setParameter(':id', $id)
+            ->getQuery()->getResult();
     }
 
 }

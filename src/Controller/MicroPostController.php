@@ -193,7 +193,13 @@ class MicroPostController extends AbstractController
             $this->entityManager->persist($comment);
             $this->entityManager->flush();
 
-            return new RedirectResponse($this->router->generate('micro_post_index'));
+            $comments = $this->commentRepository->findAllByPostId($microPost->getId());
+
+//        dd($comments); die;
+            return new Response($this->render('micro-post/post.html.twig', [
+                'post'=> $microPost,
+                'comments' => $comments
+            ]));
         }
 
         return new Response($this->render('micro-post/add.html.twig', ['form'=>$form->createView()]));
@@ -204,8 +210,13 @@ class MicroPostController extends AbstractController
      */
     public function post(MicroPost $post): Response
     {
-        $this->commentRepository->findAllByPostId($post->getId());
-        return new Response($this->render('micro-post/post.html.twig', ['post'=>$post]));
+        $comments = $this->commentRepository->findAllByPostId($post->getId());
+
+//        dd($comments); die;
+        return new Response($this->render('micro-post/post.html.twig', [
+            'post'=> $post,
+            'comments' => $comments
+        ]));
     }
 
 }

@@ -10,8 +10,8 @@
         <a href="{{ path('micro_post_post', {'id': post.id}) }}">
             {{ post.text }}
         </a>
-        <a class="btn btn-sm btn-primary" href="{{ path('comment_add', {'id': post.id}) }}">
-            {{ 'Add comment'|trans }}
+        <a class="btn btn-sm btn-primary" href="{{ path('micro_post_post', {'id': post.id}) }}">
+            {{ 'Go to post'|trans }}
         </a>
     </p>
 </div>

@@ -17,6 +17,9 @@ class Comment
      */
     private $id;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
     private $testId;
 
     /**
