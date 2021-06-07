@@ -56,11 +56,10 @@
         {{ include('micro-post/raw-post.html.twig', {'post': post}) }}
 
         <small class="d-block text-right mt-3">
-            {{ post.getTime|ago }}
             {% set isNotSignaled = post.getSignaledBy.count == 0 %}
             {% set isNotOlderThan30Minutes = (date().timestamp - date(post.getTime).timestamp) < (30 * 60) %}
             {% set isNotLiked = post.getLikedBy.count == 0 %}
-            {% if is_granted('edit', post) and isNotSignaled and isNotLiked and isNotOlderThan30Minutes %}
+            {% if is_granted('edit', post) and isNotSignaled and isNotLiked and isNotOlderThan30Minutes or is_granted('ROLE_ADMIN')%}
                 <a href="{{ path('micro_post_edit', {'id': post.id}) }}">Edit</a>
                 <a href="{{ path('micro_post_delete', {'id': post.id}) }}">Delete</a>
             {% endif %}
