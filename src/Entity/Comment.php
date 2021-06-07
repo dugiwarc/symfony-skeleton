@@ -33,7 +33,6 @@ class Comment
         return $this->id;
     }
 
-
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="comments")
      * @ORM\JoinColumn(nullable=false)

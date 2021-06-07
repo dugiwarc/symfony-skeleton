@@ -33,10 +33,7 @@ class MicroPost
         return $this->comments;
     }
 
-    /**
-     * @return ArrayCollection
-     */
-    public function getSignaledBy(): ArrayCollection
+    public function getSignaledBy()
     {
         return $this->signaledBy;
     }

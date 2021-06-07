@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use App\Form\UserType;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Entity\User;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -34,7 +35,8 @@ class RegisterController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->redirectToRoute('micro_post_index');
+            return new Response($this->render('base.html.twig'));
+//            $this->redirectToRoute('micro_post_index');
         }
 
         return $this->render('register/register.html.twig',

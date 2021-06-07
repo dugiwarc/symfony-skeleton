@@ -56,10 +56,10 @@
         {{ include('micro-post/raw-post.html.twig', {'post': post}) }}
 
         <small class="d-block text-right mt-3">
-            {% if is_granted('edit', post) %}
+            {% set isNotSignaled = post.getSignaledBy.count == 0 %}
+            {% set isNotLiked = post.getLikedBy.count == 0 %}
+            {% if is_granted('edit', post) and isNotSignaled and isNotLiked %}
                 <a href="{{ path('micro_post_edit', {'id': post.id}) }}">Edit</a>
-            {% endif %}
-            {% if is_granted('edit', post) %}
                 <a href="{{ path('micro_post_delete', {'id': post.id}) }}">Delete</a>
             {% endif %}
         </small>

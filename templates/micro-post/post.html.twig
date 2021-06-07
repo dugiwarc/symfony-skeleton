@@ -21,14 +21,21 @@
     </article>
 
     {% if is_granted('ROLE_USER') %}
+        {% set isSignaled = post.getSignaledBy.contains(app.user) %}
+        {% set isLiked = post.getLikedBy.contains(app.user) %}
+    <div>
+        <button type="button"
+                id="js-report-btn"
+                class="btn btn-outline-secondary btn-sm"
+               >
+            {% if not isSignaled %}Report{% else %}Reported{% endif %}
+            <span class="badge badge-light" id="js-report-count">
+                    {{ post.getSignaledBy.count }}
+                </span>
+        </button>
             <a class="btn btn-sm btn-primary" href="{{ path('comment_add', {'id': post.id}) }}">
                 {{ 'Add comment'|trans }}
             </a>
-        {% for comment in comments %}
-            <div>{{ comment.getText }}</div>
-        {% endfor %}
-        {% set isLiked = post.getLikedBy.contains(app.user) %}
-        <div class="pt-2">
             <button type="button"
                     id="js-like-btn"
                     class="btn btn-outline-secondary btn-sm"
@@ -48,6 +55,9 @@
                     {{ post.getLikedBy.count }}
                 </span>
             </button>
+        {% for comment in comments %}
+            <div>{{ comment.getText }}</div>
+        {% endfor %}
         </div>
     {% endif %}
 {% endblock %}
@@ -58,7 +68,9 @@
     <script>
         (function(){
             const likeButton = document.getElementById("js-like-btn");
+            const reportButton = document.getElementById("js-report-btn");
             const likeCount = document.getElementById("js-like-count");
+            const reportCount = document.getElementById("js-report-count");
             const unlikeButton = document.getElementById("js-unlike-btn");
             const unlikeCount = document.getElementById("js-unlike-count");
 
@@ -86,9 +98,22 @@
                 })
             };
 
+            const signalHandler = (button, path) => {
+                button.addEventListener('click', async event=> {
+                    try {
+                        const response = await fetch(path, {'credentials': 'include'});
+                        const data = await response.json();
+
+                        reportCount.innerText = data.count;
+                    } catch(e) {
+                        console.warn(e);
+                    }
+                })
+            }
+
             clickHandler(likeButton, unlikeButton, unlikeCount, '{{ path('likes_like', {'id': post.id}) }}');
             clickHandler(unlikeButton, likeButton, likeCount, '{{ path('likes_unlike', {'id': post.id}) }}');
-
+            signalHandler(reportButton, '{{ path('signal_post', {'id': post.id}) }}')
 
         }());
     </script>

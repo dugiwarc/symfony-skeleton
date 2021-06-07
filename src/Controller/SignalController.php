@@ -17,7 +17,7 @@ class SignalController extends AbstractController
     /**
      * @param MicroPost $microPost
      * @return JsonResponse
-     * @Route("/signal/{id}", name="signals_signal")
+     * @Route("/signal/{id}", name="signal_post")
      */
     public function signal(MicroPost $microPost) : JsonResponse
     {
